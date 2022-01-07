@@ -72,8 +72,7 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
         parse_mode: Optional[str] = object,
         caption_entities: List["types.MessageEntity"] = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        input_message_content: "types.InputMessageContent" = None,
-        thumb_url: str = None
+        input_message_content: "types.InputMessageContent" = None
     ):
         super().__init__("file", id, input_message_content, reply_markup)
 
@@ -85,7 +84,6 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
         self.parse_mode = parse_mode
         self.reply_markup = reply_markup
         self.input_message_content = input_message_content
-        self.thumb_url = thumb_url
 
     async def write(self, client: "pyrogram.Client"):
         document = utils.get_input_file_from_file_id(self.file_id)
@@ -108,11 +106,5 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
                     message=message,
                     entities=entities
                 )
-            ),
-            thumb=raw.types.InputWebDocument(
-                url=self.thumb_url,
-                size=0,
-                mime_type="image/jpeg",
-                attributes=[]
-            ) if self.thumb_url else None
+            )
         )
